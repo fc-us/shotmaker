@@ -1,0 +1,76 @@
+{
+  "" : {
+    "const-values" : "/Users/andrew-mbp/Documents/Claude/screenotate/build/Build/Intermediates.noindex/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/ShotMaker-primary.swiftconstvalues",
+    "dependencies" : "/Users/andrew-mbp/Documents/Claude/screenotate/build/Build/Intermediates.noindex/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/ShotMaker-primary.d",
+    "diagnostics" : "/Users/andrew-mbp/Documents/Claude/screenotate/build/Build/Intermediates.noindex/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/ShotMaker-primary.dia",
+    "emit-module-dependencies" : "/Users/andrew-mbp/Documents/Claude/screenotate/build/Build/Intermediates.noindex/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/ShotMaker-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/andrew-mbp/Documents/Claude/screenotate/build/Build/Intermediates.noindex/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/ShotMaker-primary-emit-module.dia",
+    "pch" : "/Users/andrew-mbp/Documents/Claude/screenotate/build/Build/Intermediates.noindex/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/ShotMaker-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/andrew-mbp/Documents/Claude/screenotate/build/Build/Intermediates.noindex/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/ShotMaker-primary.swiftdeps"
+  },
+  "/Users/andrew-mbp/Documents/Claude/screenotate/ShotMaker/Models/AppSettings.swift" : {
+    "index-unit-output-path" : "/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/AppSettings.o",
+    "llvm-bc" : "/Users/andrew-mbp/Documents/Claude/screenotate/build/Build/Intermediates.noindex/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/AppSettings.bc",
+    "object" : "/Users/andrew-mbp/Documents/Claude/screenotate/build/Build/Intermediates.noindex/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/AppSettings.o"
+  },
+  "/Users/andrew-mbp/Documents/Claude/screenotate/ShotMaker/Models/ScreenshotItem.swift" : {
+    "index-unit-output-path" : "/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/ScreenshotItem.o",
+    "llvm-bc" : "/Users/andrew-mbp/Documents/Claude/screenotate/build/Build/Intermediates.noindex/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/ScreenshotItem.bc",
+    "object" : "/Users/andrew-mbp/Documents/Claude/screenotate/build/Build/Intermediates.noindex/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/ScreenshotItem.o"
+  },
+  "/Users/andrew-mbp/Documents/Claude/screenotate/ShotMaker/Services/OCRService.swift" : {
+    "index-unit-output-path" : "/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/OCRService.o",
+    "llvm-bc" : "/Users/andrew-mbp/Documents/Claude/screenotate/build/Build/Intermediates.noindex/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/OCRService.bc",
+    "object" : "/Users/andrew-mbp/Documents/Claude/screenotate/build/Build/Intermediates.noindex/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/OCRService.o"
+  },
+  "/Users/andrew-mbp/Documents/Claude/screenotate/ShotMaker/Services/SQLiteStorage.swift" : {
+    "index-unit-output-path" : "/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/SQLiteStorage.o",
+    "llvm-bc" : "/Users/andrew-mbp/Documents/Claude/screenotate/build/Build/Intermediates.noindex/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/SQLiteStorage.bc",
+    "object" : "/Users/andrew-mbp/Documents/Claude/screenotate/build/Build/Intermediates.noindex/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/SQLiteStorage.o"
+  },
+  "/Users/andrew-mbp/Documents/Claude/screenotate/ShotMaker/Services/ScreenshotWatcher.swift" : {
+    "index-unit-output-path" : "/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/ScreenshotWatcher.o",
+    "llvm-bc" : "/Users/andrew-mbp/Documents/Claude/screenotate/build/Build/Intermediates.noindex/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/ScreenshotWatcher.bc",
+    "object" : "/Users/andrew-mbp/Documents/Claude/screenotate/build/Build/Intermediates.noindex/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/ScreenshotWatcher.o"
+  },
+  "/Users/andrew-mbp/Documents/Claude/screenotate/ShotMaker/Services/StorageProtocol.swift" : {
+    "index-unit-output-path" : "/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/StorageProtocol.o",
+    "llvm-bc" : "/Users/andrew-mbp/Documents/Claude/screenotate/build/Build/Intermediates.noindex/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/StorageProtocol.bc",
+    "object" : "/Users/andrew-mbp/Documents/Claude/screenotate/build/Build/Intermediates.noindex/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/StorageProtocol.o"
+  },
+  "/Users/andrew-mbp/Documents/Claude/screenotate/ShotMaker/Services/TaggerService.swift" : {
+    "index-unit-output-path" : "/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/TaggerService.o",
+    "llvm-bc" : "/Users/andrew-mbp/Documents/Claude/screenotate/build/Build/Intermediates.noindex/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/TaggerService.bc",
+    "object" : "/Users/andrew-mbp/Documents/Claude/screenotate/build/Build/Intermediates.noindex/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/TaggerService.o"
+  },
+  "/Users/andrew-mbp/Documents/Claude/screenotate/ShotMaker/ShotMakerApp.swift" : {
+    "index-unit-output-path" : "/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/ShotMakerApp.o",
+    "llvm-bc" : "/Users/andrew-mbp/Documents/Claude/screenotate/build/Build/Intermediates.noindex/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/ShotMakerApp.bc",
+    "object" : "/Users/andrew-mbp/Documents/Claude/screenotate/build/Build/Intermediates.noindex/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/ShotMakerApp.o"
+  },
+  "/Users/andrew-mbp/Documents/Claude/screenotate/ShotMaker/Views/DetailPanelView.swift" : {
+    "index-unit-output-path" : "/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/DetailPanelView.o",
+    "llvm-bc" : "/Users/andrew-mbp/Documents/Claude/screenotate/build/Build/Intermediates.noindex/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/DetailPanelView.bc",
+    "object" : "/Users/andrew-mbp/Documents/Claude/screenotate/build/Build/Intermediates.noindex/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/DetailPanelView.o"
+  },
+  "/Users/andrew-mbp/Documents/Claude/screenotate/ShotMaker/Views/MainWindowView.swift" : {
+    "index-unit-output-path" : "/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/MainWindowView.o",
+    "llvm-bc" : "/Users/andrew-mbp/Documents/Claude/screenotate/build/Build/Intermediates.noindex/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/MainWindowView.bc",
+    "object" : "/Users/andrew-mbp/Documents/Claude/screenotate/build/Build/Intermediates.noindex/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/MainWindowView.o"
+  },
+  "/Users/andrew-mbp/Documents/Claude/screenotate/ShotMaker/Views/SettingsView.swift" : {
+    "index-unit-output-path" : "/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/SettingsView.o",
+    "llvm-bc" : "/Users/andrew-mbp/Documents/Claude/screenotate/build/Build/Intermediates.noindex/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/SettingsView.bc",
+    "object" : "/Users/andrew-mbp/Documents/Claude/screenotate/build/Build/Intermediates.noindex/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/SettingsView.o"
+  },
+  "/Users/andrew-mbp/Documents/Claude/screenotate/ShotMaker/Views/SidebarView.swift" : {
+    "index-unit-output-path" : "/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/SidebarView.o",
+    "llvm-bc" : "/Users/andrew-mbp/Documents/Claude/screenotate/build/Build/Intermediates.noindex/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/SidebarView.bc",
+    "object" : "/Users/andrew-mbp/Documents/Claude/screenotate/build/Build/Intermediates.noindex/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/SidebarView.o"
+  },
+  "/Users/andrew-mbp/Documents/Claude/screenotate/ShotMaker/Views/ThumbnailGridView.swift" : {
+    "index-unit-output-path" : "/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/ThumbnailGridView.o",
+    "llvm-bc" : "/Users/andrew-mbp/Documents/Claude/screenotate/build/Build/Intermediates.noindex/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/ThumbnailGridView.bc",
+    "object" : "/Users/andrew-mbp/Documents/Claude/screenotate/build/Build/Intermediates.noindex/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/ThumbnailGridView.o"
+  }
+}

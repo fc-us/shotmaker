@@ -1,0 +1,12 @@
+{
+  "/Users/andrew-mbp/Documents/Claude/screenotate/ShotMaker/Models/AppSettings.swift" : {
+    "abi-baseline-json" : "/Users/andrew-mbp/Documents/Claude/screenotate/build/Build/Intermediates.noindex/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/ShotMaker.abi.json",
+    "const-values" : "/Users/andrew-mbp/Documents/Claude/screenotate/build/Build/Intermediates.noindex/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/ShotMaker-primary.swiftconstvalues",
+    "dependencies" : "/Users/andrew-mbp/Documents/Claude/screenotate/build/Build/Intermediates.noindex/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/ShotMaker-primary.d",
+    "diagnostics" : "/Users/andrew-mbp/Documents/Claude/screenotate/build/Build/Intermediates.noindex/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/ShotMaker-primary.dia",
+    "objc-header" : "/Users/andrew-mbp/Documents/Claude/screenotate/build/Build/Intermediates.noindex/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/ShotMaker-Swift.h",
+    "swiftdoc" : "/Users/andrew-mbp/Documents/Claude/screenotate/build/Build/Intermediates.noindex/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/ShotMaker.swiftdoc",
+    "swiftmodule" : "/Users/andrew-mbp/Documents/Claude/screenotate/build/Build/Intermediates.noindex/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/ShotMaker.swiftmodule",
+    "swiftsourceinfo" : "/Users/andrew-mbp/Documents/Claude/screenotate/build/Build/Intermediates.noindex/ShotMaker.build/Release/ShotMaker.build/Objects-normal/arm64/ShotMaker.swiftsourceinfo"
+  }
+}

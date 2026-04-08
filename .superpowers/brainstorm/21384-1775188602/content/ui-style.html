@@ -1,0 +1,115 @@
+<h2>How should you browse your screenshots?</h2>
+<p class="subtitle">Pick the interaction model that fits how you'd use this daily</p>
+
+<div class="cards">
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="background:#1a1a1a;padding:16px;border-radius:8px;font-family:system-ui;min-height:180px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+          <div style="width:12px;height:12px;background:#4ade80;border-radius:50%;"></div>
+          <span style="color:#888;font-size:11px;font-weight:600;letter-spacing:0.5px;">SCREENOTATE</span>
+          <div style="margin-left:auto;background:#2a2a2a;border-radius:4px;padding:2px 8px;">
+            <span style="color:#666;font-size:11px;">⌘K Search...</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="background:#222;border-radius:6px;padding:8px 10px;display:flex;align-items:center;gap:8px;">
+            <div style="width:32px;height:32px;background:#333;border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;color:#666;">IMG</div>
+            <div>
+              <div style="color:#ccc;font-size:11px;font-weight:500;">Error in console — React h...</div>
+              <div style="color:#666;font-size:10px;">VS Code · 2 min ago · <span style="background:#2d3a2d;color:#6ee7a0;padding:1px 4px;border-radius:2px;font-size:9px;">code</span></div>
+            </div>
+          </div>
+          <div style="background:#222;border-radius:6px;padding:8px 10px;display:flex;align-items:center;gap:8px;">
+            <div style="width:32px;height:32px;background:#333;border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;color:#666;">IMG</div>
+            <div>
+              <div style="color:#ccc;font-size:11px;font-weight:500;">Meeting notes — Q2 planni...</div>
+              <div style="color:#666;font-size:10px;">Notion · 15 min ago · <span style="background:#2d2d3a;color:#a0a0ee;padding:1px 4px;border-radius:2px;font-size:9px;">notes</span></div>
+            </div>
+          </div>
+          <div style="background:#222;border-radius:6px;padding:8px 10px;display:flex;align-items:center;gap:8px;">
+            <div style="width:32px;height:32px;background:#333;border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;color:#666;">IMG</div>
+            <div>
+              <div style="color:#ccc;font-size:11px;font-weight:500;">Invoice #4821 — Cloudflare</div>
+              <div style="color:#666;font-size:10px;">Safari · 1 hr ago · <span style="background:#3a2d2d;color:#eea0a0;padding:1px 4px;border-radius:2px;font-size:9px;">receipt</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — Menubar Dropdown</h3>
+      <p>Like CopyClip. Compact list in menubar popover with search. Quick access, minimal UI. Click to copy text or open image.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="background:#1a1a1a;padding:16px;border-radius:8px;font-family:system-ui;min-height:180px;">
+        <div style="display:flex;gap:12px;height:160px;">
+          <div style="width:140px;flex-shrink:0;display:flex;flex-direction:column;gap:6px;">
+            <div style="background:#2a2a2a;border-radius:4px;padding:6px 8px;color:#fff;font-size:10px;font-weight:600;">All <span style="color:#666;float:right;">47</span></div>
+            <div style="background:transparent;border-radius:4px;padding:6px 8px;color:#888;font-size:10px;">Code <span style="color:#555;float:right;">12</span></div>
+            <div style="background:transparent;border-radius:4px;padding:6px 8px;color:#888;font-size:10px;">Notes <span style="color:#555;float:right;">18</span></div>
+            <div style="background:transparent;border-radius:4px;padding:6px 8px;color:#888;font-size:10px;">Receipts <span style="color:#555;float:right;">5</span></div>
+            <div style="background:transparent;border-radius:4px;padding:6px 8px;color:#888;font-size:10px;">Chat <span style="color:#555;float:right;">12</span></div>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;gap:6px;">
+            <div style="background:#222;border-radius:4px;padding:4px 8px;display:flex;align-items:center;gap:4px;">
+              <span style="color:#666;font-size:11px;">🔍</span>
+              <span style="color:#555;font-size:11px;">Search all screenshots...</span>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;flex:1;">
+              <div style="background:#333;border-radius:3px;"></div>
+              <div style="background:#333;border-radius:3px;"></div>
+              <div style="background:#333;border-radius:3px;"></div>
+              <div style="background:#333;border-radius:3px;"></div>
+              <div style="background:#333;border-radius:3px;"></div>
+              <div style="background:#333;border-radius:3px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Standalone Window</h3>
+      <p>Full app window with sidebar filters (by tag, app, date), grid view of thumbnails, and detail panel. More powerful but heavier.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="background:#1a1a1a;padding:16px;border-radius:8px;font-family:system-ui;min-height:180px;">
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:160px;gap:12px;">
+          <div style="background:#222;border-radius:8px;padding:12px 20px;display:flex;align-items:center;gap:8px;width:280px;">
+            <span style="color:#666;font-size:14px;">⌘</span>
+            <span style="color:#888;font-size:13px;">Search screenshots...</span>
+          </div>
+          <div style="background:#222;border-radius:8px;width:280px;overflow:hidden;">
+            <div style="padding:8px 12px;border-bottom:1px solid #2a2a2a;display:flex;align-items:center;gap:8px;">
+              <div style="width:24px;height:24px;background:#333;border-radius:3px;flex-shrink:0;"></div>
+              <div>
+                <div style="color:#ccc;font-size:11px;">Error in console</div>
+                <div style="color:#555;font-size:9px;">VS Code · code</div>
+              </div>
+              <div style="margin-left:auto;color:#555;font-size:9px;">⏎</div>
+            </div>
+            <div style="padding:8px 12px;display:flex;align-items:center;gap:8px;">
+              <div style="width:24px;height:24px;background:#333;border-radius:3px;flex-shrink:0;"></div>
+              <div>
+                <div style="color:#ccc;font-size:11px;">Meeting notes</div>
+                <div style="color:#555;font-size:9px;">Notion · notes</div>
+              </div>
+              <div style="margin-left:auto;color:#555;font-size:9px;">⏎</div>
+            </div>
+          </div>
+          <div style="color:#555;font-size:10px;">Press ⌘⇧S anywhere</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C — Spotlight-style Palette</h3>
+      <p>Global hotkey opens a floating search bar. Type to search OCR text. Arrow keys to navigate, Enter to open. Raycast/Alfred-like. Menubar icon just shows status.</p>
+    </div>
+  </div>
+</div>

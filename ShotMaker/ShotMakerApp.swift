@@ -1,0 +1,102 @@
+import SwiftUI
+import UserNotifications
+
+@main
+struct ShotMakerApp: App {
+    @StateObject private var watcher = ScreenshotWatcher()
+    @ObservedObject private var appSettings = AppSettings.shared
+    @NSApplicationDelegateAdaptor(StatusBarDelegate.self) var statusBarDelegate
+
+    var body: some Scene {
+        WindowGroup("ShotMaker") {
+            MainWindowView()
+                .environmentObject(watcher)
+                .environmentObject(appSettings)
+                .frame(minWidth: 700, minHeight: 400)
+        }
+        .defaultSize(width: 900, height: 600)
+
+        Settings {
+            SettingsView()
+                .environmentObject(appSettings)
+        }
+    }
+}
+
+class StatusBarDelegate: NSObject, NSApplicationDelegate {
+    var statusItem: NSStatusItem?
+    private var watcher: ScreenshotWatcher?
+
+    func applicationDidFinishLaunching(_ notification: Notification) {
+        // Create status bar item immediately on launch
+        statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
+        if let button = statusItem?.button {
+            button.image = NSImage(systemSymbolName: "basketball.fill", accessibilityDescription: "ShotMaker")
+        }
+        let menu = NSMenu()
+        menu.delegate = self
+        statusItem?.menu = menu
+
+        // Find the watcher from the SwiftUI environment
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            // The watcher is owned by the App struct, grab it via notification or just rebuild menu
+            self?.rebuildMenu()
+        }
+
+        NSApplication.shared.activate(ignoringOtherApps: true)
+    }
+
+    func setWatcher(_ watcher: ScreenshotWatcher) {
+        self.watcher = watcher
+        rebuildMenu()
+    }
+
+    func rebuildMenu() {
+        guard let menu = statusItem?.menu else { return }
+        menu.removeAllItems()
+
+        let count = watcher?.totalCount ?? 0
+        let watching = watcher?.isWatching ?? true
+
+        let info = NSMenuItem(title: "\(count) screenshots · \(watching ? "Watching" : "Paused")", action: nil, keyEquivalent: "")
+        info.isEnabled = false
+        menu.addItem(info)
+        menu.addItem(NSMenuItem.separator())
+
+        let openItem = NSMenuItem(title: "Open ShotMaker", action: #selector(openApp), keyEquivalent: "o")
+        openItem.target = self
+        menu.addItem(openItem)
+
+        let toggleTitle = watching ? "Pause Watching" : "Resume Watching"
+        let toggleItem = NSMenuItem(title: toggleTitle, action: #selector(toggleWatching), keyEquivalent: "p")
+        toggleItem.target = self
+        menu.addItem(toggleItem)
+
+        menu.addItem(NSMenuItem.separator())
+
+        let quitItem = NSMenuItem(title: "Quit ShotMaker", action: #selector(quitApp), keyEquivalent: "q")
+        quitItem.target = self
+        menu.addItem(quitItem)
+    }
+
+    @objc func openApp() {
+        NSApplication.shared.activate(ignoringOtherApps: true)
+        for window in NSApplication.shared.windows where window.title == "ShotMaker" {
+            window.makeKeyAndOrderFront(nil)
+        }
+    }
+
+    @objc func toggleWatching() {
+        watcher?.toggleWatching()
+    }
+
+    @objc func quitApp() {
+        NSApplication.shared.terminate(nil)
+    }
+}
+
+extension StatusBarDelegate: NSMenuDelegate {
+    func menuWillOpen(_ menu: NSMenu) {
+        rebuildMenu()
+    }
+}
