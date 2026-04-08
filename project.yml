@@ -1,0 +1,31 @@
+name: ShotMaker
+options:
+  bundleIdPrefix: org.frontiercommons
+  deploymentTarget:
+    macOS: "13.0"
+  xcodeVersion: "15.0"
+
+targets:
+  ShotMaker:
+    type: application
+    platform: macOS
+    sources:
+      - ShotMaker
+    info:
+      path: ShotMaker/Info.plist
+      properties:
+        CFBundleIconFile: ShotMaker
+        NSHumanReadableCopyright: "Copyright 2026 Frontier Commons"
+    entitlements:
+      path: ShotMaker/ShotMaker.entitlements
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: org.frontiercommons.shot-maker
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        MARKETING_VERSION: "1.0.0"
+        CURRENT_PROJECT_VERSION: "1"
+        SWIFT_VERSION: "5.9"
+        MACOSX_DEPLOYMENT_TARGET: "13.0"
+        LD_RUNPATH_SEARCH_PATHS: "@executable_path/../Frameworks"
+        INFOPLIST_FILE: ShotMaker/Info.plist
+        CODE_SIGN_ENTITLEMENTS: ShotMaker/ShotMaker.entitlements
