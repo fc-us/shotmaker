@@ -48,7 +48,7 @@ final class OCRService {
         }
     }
 
-    /// Generate a small JPEG thumbnail from an image file.
+    /// Generate a small JPEG thumbnail using CoreGraphics (thread-safe, no AppKit drawing).
     func generateThumbnail(at filePath: String, maxDimension: CGFloat = 200) -> Data? {
         guard let image = NSImage(contentsOfFile: filePath),
               let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
@@ -58,25 +58,24 @@ final class OCRService {
         let originalWidth = CGFloat(cgImage.width)
         let originalHeight = CGFloat(cgImage.height)
         let scale = min(maxDimension / originalWidth, maxDimension / originalHeight, 1.0)
-        let newWidth = originalWidth * scale
-        let newHeight = originalHeight * scale
+        let newWidth = Int(originalWidth * scale)
+        let newHeight = Int(originalHeight * scale)
 
-        let nsImage = NSImage(size: NSSize(width: newWidth, height: newHeight))
-        nsImage.lockFocus()
-        NSGraphicsContext.current?.imageInterpolation = .high
-        image.draw(
-            in: NSRect(x: 0, y: 0, width: newWidth, height: newHeight),
-            from: NSRect(x: 0, y: 0, width: image.size.width, height: image.size.height),
-            operation: .copy,
-            fraction: 1.0
-        )
-        nsImage.unlockFocus()
+        guard let context = CGContext(
+            data: nil,
+            width: newWidth, height: newHeight,
+            bitsPerComponent: 8,
+            bytesPerRow: 0,
+            space: CGColorSpaceCreateDeviceRGB(),
+            bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue
+        ) else { return nil }
 
-        guard let tiffData = nsImage.tiffRepresentation,
-              let bitmap = NSBitmapImageRep(data: tiffData) else {
-            return nil
-        }
+        context.interpolationQuality = .high
+        context.draw(cgImage, in: CGRect(x: 0, y: 0, width: newWidth, height: newHeight))
 
+        guard let resultCG = context.makeImage() else { return nil }
+
+        let bitmap = NSBitmapImageRep(cgImage: resultCG)
         return bitmap.representation(using: .jpeg, properties: [.compressionFactor: 0.3])
     }
 }

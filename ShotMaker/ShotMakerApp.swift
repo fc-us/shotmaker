@@ -42,12 +42,6 @@ class StatusBarDelegate: NSObject, NSApplicationDelegate {
         menu.delegate = self
         statusItem?.menu = menu
 
-        // Find the watcher from the SwiftUI environment
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-            // The watcher is owned by the App struct, grab it via notification or just rebuild menu
-            self?.rebuildMenu()
-        }
-
         // ⌥⌘F global hotkey: bring window forward + focus search
         HotkeyService.shared.register()
         NotificationCenter.default.addObserver(

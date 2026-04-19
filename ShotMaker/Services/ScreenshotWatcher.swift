@@ -11,11 +11,8 @@ final class ScreenshotWatcher: ObservableObject {
     @Published var appCounts: [(String, Int)] = []
     @Published var processingCount: Int = 0
 
-    var totalCount: Int { items.count }
-    var recentCount: Int {
-        let startOfDay = Calendar.current.startOfDay(for: Date())
-        return items.filter { $0.createdAt >= startOfDay }.count
-    }
+    @Published var totalCount: Int = 0
+    @Published var recentCount: Int = 0
 
     private var pollTimer: Timer?
     private let storage: ScreenshotStorage
@@ -48,11 +45,10 @@ final class ScreenshotWatcher: ObservableObject {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert]) { _, _ in }
     }
 
-    private func sendNotification(tag: ScreenshotTag, ocrText: String?) {
+    private func sendNotification(tag: ScreenshotTag, fileName: String) {
         let content = UNMutableNotificationContent()
         content.title = "Screenshot captured"
-        let preview = ocrText.flatMap { String($0.prefix(60)) } ?? "No text found"
-        content.body = "Tagged as \(tag.displayName) — \(preview)"
+        content.body = "Tagged as \(tag.displayName) — \(fileName)"
         content.sound = nil
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil)
         UNUserNotificationCenter.current().add(request)
@@ -120,7 +116,7 @@ final class ScreenshotWatcher: ObservableObject {
             if !knownFiles.contains(fullPath) {
                 print("[ShotMaker] New file detected: \(file)")
                 knownFiles.insert(fullPath)
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+                waitUntilFileStable(at: fullPath) { [weak self] in
                     self?.processNewFile(at: fullPath, appName: frontApp)
                 }
             }
@@ -129,11 +125,26 @@ final class ScreenshotWatcher: ObservableObject {
 
     // MARK: - File Processing
 
+    /// Polls until the file size stabilizes (write complete) before processing.
+    private func waitUntilFileStable(at path: String, attempts: Int = 0, lastSize: Int64 = -1, completion: @escaping () -> Void) {
+        let size = (try? FileManager.default.attributesOfItem(atPath: path)[.size] as? Int64) ?? -1
+        if size > 0 && size == lastSize {
+            completion()
+        } else if attempts >= 10 {
+            completion()
+        } else {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+                self?.waitUntilFileStable(at: path, attempts: attempts + 1, lastSize: size, completion: completion)
+            }
+        }
+    }
+
     func processNewFile(at path: String, appName: String? = nil) {
         guard path.lowercased().hasSuffix(".png") else { return }
         guard FileManager.default.fileExists(atPath: path) else { return }
 
-        DispatchQueue.main.async { self.processingCount += 1 }
+        // Called on main thread; increment synchronously to avoid race with completion decrement
+        processingCount += 1
 
         processingQueue.async { [weak self] in
             guard let self = self else { return }
@@ -144,7 +155,6 @@ final class ScreenshotWatcher: ObservableObject {
                 guard let self = self else { return }
 
                 let tag = self.taggerService.classify(text: ocrText)
-                print("[ShotMaker] OCR result: \(ocrText?.prefix(80) ?? "nil") | tag: \(tag.rawValue)")
 
                 let embeddingData: Data? = {
                     guard let text = ocrText,
@@ -152,25 +162,29 @@ final class ScreenshotWatcher: ObservableObject {
                     return EmbeddingService.encode(vec)
                 }()
 
+                let fileCreatedAt = (try? FileManager.default.attributesOfItem(atPath: path)[.creationDate] as? Date) ?? Date()
+                let fileName = (path as NSString).lastPathComponent
+
                 do {
                     let _ = try self.storage.save(
                         filePath: path,
                         ocrText: ocrText,
                         tag: tag.rawValue,
                         appName: appName,
-                        createdAt: Date(),
+                        createdAt: fileCreatedAt,
                         thumbnail: thumbnail,
                         embedding: embeddingData
                     )
-                    DispatchQueue.main.async {
+                    DispatchQueue.main.async { [weak self] in
+                        guard let self = self else { return }
                         self.loadItems()
                         self.loadFilterCounts()
                         self.processingCount -= 1
+                        self.sendNotification(tag: tag, fileName: fileName)
                     }
-                    self.sendNotification(tag: tag, ocrText: ocrText)
                 } catch {
                     print("[ShotMaker] Failed to save screenshot: \(error)")
-                    DispatchQueue.main.async { self.processingCount -= 1 }
+                    DispatchQueue.main.async { [weak self] in self?.processingCount -= 1 }
                 }
             }
         }
@@ -181,7 +195,13 @@ final class ScreenshotWatcher: ObservableObject {
     func loadItems() {
         do {
             let all = try storage.fetchAll(limit: 500, offset: 0)
-            DispatchQueue.main.async { self.items = all }
+            let total = try storage.count()
+            let recent = try storage.recentCount(since: Calendar.current.startOfDay(for: Date()))
+            DispatchQueue.main.async {
+                self.items = all
+                self.totalCount = total
+                self.recentCount = recent
+            }
         } catch {
             print("[ShotMaker] Failed to load items: \(error)")
         }
@@ -225,7 +245,8 @@ final class ScreenshotWatcher: ObservableObject {
         processingQueue.async { [weak self] in
             guard let self = self else { return }
             do {
-                let rows = try self.storage.allEmbeddings()
+                // Filter in SQL so we only score rows matching the active tag/app filters
+                let rows = try self.storage.allEmbeddings(tag: tag, appName: appName)
                 var scored: [(Int64, Float)] = []
                 scored.reserveCapacity(rows.count)
 
@@ -242,18 +263,13 @@ final class ScreenshotWatcher: ObservableObject {
                     scored.append((row.id, EmbeddingService.cosine(queryVec, vec)))
                 }
 
-                // Keep top matches with positive similarity
                 scored.sort { $0.1 > $1.1 }
                 let topIds = scored.prefix(limit).filter { $0.1 > 0.15 }.map { $0.0 }
 
                 let items = try self.storage.fetchByIds(topIds)
-                // Preserve ranking order
                 let orderMap = Dictionary(uniqueKeysWithValues: topIds.enumerated().map { ($1, $0) })
                 let ordered = items.sorted {
                     (orderMap[$0.id] ?? .max) < (orderMap[$1.id] ?? .max)
-                }.filter { item in
-                    (tag == nil || item.tag.rawValue == tag) &&
-                    (appName == nil || item.appName == appName)
                 }
 
                 DispatchQueue.main.async { self.items = ordered }

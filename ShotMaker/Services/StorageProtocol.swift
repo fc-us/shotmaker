@@ -13,7 +13,7 @@ protocol ScreenshotStorage {
     func tagCounts() throws -> [(String, Int)]
     func appCounts() throws -> [(String, Int)]
     func recentCount(since: Date) throws -> Int
-    func allEmbeddings() throws -> [(id: Int64, ocrText: String, embedding: Data?)]
+    func allEmbeddings(tag: String?, appName: String?) throws -> [(id: Int64, ocrText: String, embedding: Data?)]
     func updateEmbedding(id: Int64, embedding: Data) throws
     func fetchByIds(_ ids: [Int64]) throws -> [ScreenshotItem]
 }

@@ -16,8 +16,17 @@ targets:
       properties:
         CFBundleIconFile: ShotMaker
         NSHumanReadableCopyright: "Copyright 2026 Frontier Commons"
+        CFBundleShortVersionString: "1.0.0"
+        LSUIElement: true
+        LSApplicationCategoryType: public.app-category.productivity
+        NSHighResolutionCapable: true
+        NSUserNotificationsUsageDescription: "ShotMaker sends a notification when a new screenshot is captured and processed."
     entitlements:
       path: ShotMaker/ShotMaker.entitlements
+      properties:
+        com.apple.security.cs.allow-jit: false
+        com.apple.security.cs.allow-unsigned-executable-memory: false
+        com.apple.security.cs.disable-library-validation: false
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: org.frontiercommons.shot-maker
@@ -29,3 +38,7 @@ targets:
         LD_RUNPATH_SEARCH_PATHS: "@executable_path/../Frameworks"
         INFOPLIST_FILE: ShotMaker/Info.plist
         CODE_SIGN_ENTITLEMENTS: ShotMaker/ShotMaker.entitlements
+        ENABLE_HARDENED_RUNTIME: YES
+        CODE_SIGN_IDENTITY: "Developer ID Application"
+        CODE_SIGN_STYLE: Manual
+        DEVELOPMENT_TEAM: RJL4AN4QK9

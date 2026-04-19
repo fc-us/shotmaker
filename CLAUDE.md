@@ -50,6 +50,16 @@ code, conversation, article, notes, receipt, design, data, other
 - xcodegen (`brew install xcodegen`)
 
 ## Status
-- All source code written
-- NOT YET COMPILED -- needs Xcode installed
-- Next: Install Xcode -> `make run` -> test -> iterate
+- Xcode 26.4 installed, builds clean (zero warnings)
+- v1.1 features shipped 2026-04-18:
+  - Global ⌥⌘F hotkey (Carbon, no accessibility permission)
+  - Paste image from clipboard → ingest
+  - Drag thumbnail into any app
+  - Semantic search via NLEmbedding (on-device, free; embeddings stored in `embedding` BLOB col, lazy backfill on first semantic query)
+  - Search-query highlighting in thumbnails + detail panel
+- Apple Developer account acquired; Developer ID cert still TODO
+
+## Open Items
+- User: create Developer ID Application cert in Xcode → Settings → Accounts → Manage Certificates (`security find-identity -v -p codesigning` currently shows 0 identities)
+- Then: archive + notarize + export DMG for distribution
+- Backlog bug fixes (not yet applied): OCR completion on main thread, silent UPDATE/DELETE failures, OCR queue drain on deinit, thumbnail size cap, pollTimer race
