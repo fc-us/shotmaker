@@ -1,11 +1,27 @@
+# Build artifacts
 build/
 *.xcarchive/
 DerivedData/
 *.dSYM/
-.DS_Store
+*.o
+*.d
+
+# Xcode user data
+xcuserdata/
+*.xcworkspace/xcuserdata/
+*.xcscmblueprint
+
+# Distribution
 ExportOptions.plist
+*.zip
+
+# Local tools
 .gstack/
 .enzyme/
 .enzyme-embeddings/
-xcuserdata/
-*.xcworkspace/xcuserdata/
+.superpowers/
+export/
+
+# macOS
+.DS_Store
+.AppleDouble
