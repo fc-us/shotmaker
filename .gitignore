@@ -22,6 +22,12 @@ ExportOptions.plist
 .superpowers/
 export/
 
+# Generated project
+ShotMaker.xcodeproj/
+
+# Private dev notes
+CLAUDE.md
+
 # macOS
 .DS_Store
 .AppleDouble

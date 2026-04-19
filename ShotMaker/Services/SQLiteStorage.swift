@@ -164,21 +164,16 @@ final class SQLiteStorage: ScreenshotStorage {
         try queue.sync {
             guard let db = db else { throw StorageError.prepareFailed("Database not open") }
             var conditions = ["ocr_text IS NOT NULL"]
-            if tag != nil { conditions.append("tag = ?2") }
-            if appName != nil { conditions.append("app_name = ?" + (tag != nil ? "3" : "2")) }
+            var params: [String] = []
+            if let t = tag { conditions.append("tag = ?"); params.append(t) }
+            if let a = appName { conditions.append("app_name = ?"); params.append(a) }
             let sql = "SELECT id, ocr_text, embedding FROM screenshots WHERE \(conditions.joined(separator: " AND "))"
             var stmt: OpaquePointer?
             guard sqlite3_prepare_v2(db, sql, -1, &stmt, nil) == SQLITE_OK else {
                 throw StorageError.prepareFailed(lastError())
             }
-            var bindIdx: Int32 = 1
-            if let t = tag {
-                bindIdx += 1
-                sqlite3_bind_text(stmt, bindIdx, (t as NSString).utf8String, -1, SQLITE_TRANSIENT)
-            }
-            if let a = appName {
-                bindIdx += 1
-                sqlite3_bind_text(stmt, bindIdx, (a as NSString).utf8String, -1, SQLITE_TRANSIENT)
+            for (i, param) in params.enumerated() {
+                sqlite3_bind_text(stmt, Int32(i + 1), (param as NSString).utf8String, -1, SQLITE_TRANSIENT)
             }
             var results: [(Int64, String, Data?)] = []
             while sqlite3_step(stmt) == SQLITE_ROW {

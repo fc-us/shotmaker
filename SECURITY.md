@@ -16,17 +16,17 @@ ShotMaker is a local-only utility. It has no server, no account system, and no n
 
 **What it has access to:**
 - Your Desktop folder (required to watch for screenshots)
-- Writes one SQLite database to `~/Library/Application Support/org.frontiercommons.shot-maker/`
+- Writes one SQLite database to `~/Library/Application Support/ShotMaker/`
 - Sends macOS user notifications (no content beyond filename and auto-tag)
 
 **What it doesn't do:**
 - No outbound network connections
 - No microphone, camera, or location access
 - No clipboard access except when you explicitly trigger paste-to-ingest
-- No access outside the Desktop folder and its own Application Support directory
+- No access outside the configured watch directory and its own Application Support directory
 
 **Local data security:**
-- The SQLite database is at `~/Library/Application Support/org.frontiercommons.shot-maker/screenshots.db` with permissions `0700` on the containing directory
+- The SQLite database is at `~/Library/Application Support/ShotMaker/screenshots.db` with permissions `0700` on the containing directory
 - OCR text is stored in plaintext in the database — this is necessary for search to work. Treat the database like you'd treat a folder of your screenshots
 - Thumbnails are stored as JPEG blobs in the same database
 

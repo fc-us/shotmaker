@@ -65,7 +65,7 @@ Single-process SwiftUI app. The interesting parts:
 
 OCR runs on a background `DispatchQueue`. All SQLite access goes through a serial queue. UI updates dispatch to main.
 
-The database lives at `~/Library/Application Support/org.frontiercommons.shot-maker/screenshots.db`.
+The database lives at `~/Library/Application Support/ShotMaker/screenshots.db`.
 
 ## Privacy
 
@@ -80,7 +80,7 @@ You can verify this in Activity Monitor → Network tab while the app is running
 
 ## Distribution
 
-The release DMG is notarized with a Developer ID certificate (Apple ID: andrewfengdts@gmail.com, Team: RJL4AN4QK9) and stapled, so Gatekeeper accepts it without prompting.
+The release DMG is notarized with a Developer ID certificate and stapled, so Gatekeeper accepts it without prompting.
 
 ## License
 
