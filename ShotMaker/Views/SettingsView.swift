@@ -47,10 +47,13 @@ struct SettingsView: View {
         panel.canChooseDirectories = true
         panel.canChooseFiles = false
         panel.allowsMultipleSelection = false
+        panel.message = "Choose the folder ShotMaker should watch for new screenshots"
+        panel.prompt = "Watch This Folder"
         panel.directoryURL = URL(fileURLWithPath: settings.watchDirectory)
 
         if panel.runModal() == .OK, let url = panel.url {
-            settings.watchDirectory = url.path
+            try? settings.saveWatchDirectory(url)
+            ScreenshotWatcher.shared.startWatching()
         }
     }
 

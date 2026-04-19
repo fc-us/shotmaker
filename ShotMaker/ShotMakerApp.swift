@@ -54,6 +54,29 @@ class StatusBarDelegate: NSObject, NSApplicationDelegate {
         )
 
         NSApplication.shared.activate(ignoringOtherApps: true)
+
+        // First launch: ask user to grant sandbox access to their screenshots folder
+        if !AppSettings.shared.hasWatchDirectoryPermission {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                self.requestDirectoryPermission()
+            }
+        }
+    }
+
+    private func requestDirectoryPermission() {
+        let panel = NSOpenPanel()
+        panel.message = "Choose the folder ShotMaker should watch for new screenshots.\n\nThis is usually your Desktop."
+        panel.prompt = "Watch This Folder"
+        panel.canChooseDirectories = true
+        panel.canChooseFiles = false
+        panel.allowsMultipleSelection = false
+        panel.directoryURL = URL(fileURLWithPath: NSHomeDirectory() + "/Desktop")
+
+        NSApp.activate(ignoringOtherApps: true)
+        guard panel.runModal() == .OK, let url = panel.url else { return }
+
+        try? AppSettings.shared.saveWatchDirectory(url)
+        ScreenshotWatcher.shared.startWatching()
     }
 
     @objc func handleHotkey() {
@@ -92,6 +115,12 @@ class StatusBarDelegate: NSObject, NSApplicationDelegate {
 
         menu.addItem(NSMenuItem.separator())
 
+        let feedbackItem = NSMenuItem(title: "Send Feedback", action: #selector(sendFeedback), keyEquivalent: "")
+        feedbackItem.target = self
+        menu.addItem(feedbackItem)
+
+        menu.addItem(NSMenuItem.separator())
+
         let quitItem = NSMenuItem(title: "Quit ShotMaker", action: #selector(quitApp), keyEquivalent: "q")
         quitItem.target = self
         menu.addItem(quitItem)
@@ -106,6 +135,12 @@ class StatusBarDelegate: NSObject, NSApplicationDelegate {
 
     @objc func toggleWatching() {
         watcher?.toggleWatching()
+    }
+
+    @objc func sendFeedback() {
+        if let url = URL(string: "https://github.com/fc-us/shotmaker/issues/new?labels=feedback&template=feedback.md") {
+            NSWorkspace.shared.open(url)
+        }
     }
 
     @objc func quitApp() {

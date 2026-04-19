@@ -23,6 +23,7 @@ final class ScreenshotWatcher: ObservableObject {
     private var knownFiles: Set<String> = []
     private let processingQueue = DispatchQueue(label: "org.frontiercommons.shot-maker.watcher")
     private var lastWatchDir: String = ""
+    private var activeAccessURL: URL?  // security-scoped resource currently being accessed
 
     init(storage: ScreenshotStorage = SQLiteStorage(), settings: AppSettings = .shared) {
         self.storage = storage
@@ -59,6 +60,14 @@ final class ScreenshotWatcher: ObservableObject {
 
     func startWatching() {
         stopWatching()
+
+        // Acquire security-scoped resource access for the watch directory
+        if let url = settings.resolvedWatchURL {
+            if url.startAccessingSecurityScopedResource() {
+                activeAccessURL = url
+            }
+        }
+
         isWatching = true
         settings.isWatching = true
         lastWatchDir = settings.watchDirectory
@@ -76,6 +85,8 @@ final class ScreenshotWatcher: ObservableObject {
     func stopWatching() {
         pollTimer?.invalidate()
         pollTimer = nil
+        activeAccessURL?.stopAccessingSecurityScopedResource()
+        activeAccessURL = nil
         isWatching = false
         settings.isWatching = false
     }

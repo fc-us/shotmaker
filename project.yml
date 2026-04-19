@@ -40,7 +40,8 @@ targets:
         INFOPLIST_FILE: ShotMaker/Info.plist
         CODE_SIGN_ENTITLEMENTS: ShotMaker/ShotMaker.entitlements
         ENABLE_HARDENED_RUNTIME: YES
-        # For local development: ad-hoc signing works fine
-        # For distribution: override with CODE_SIGN_IDENTITY="Developer ID Application" DEVELOPMENT_TEAM=<your-team-id>
+        # For local development: ad-hoc signing (CODE_SIGN_IDENTITY="-")
+        # For TestFlight/App Store: CODE_SIGN_IDENTITY="Apple Distribution" DEVELOPMENT_TEAM=<your-team-id>
+        # For Developer ID DMG:    CODE_SIGN_IDENTITY="Developer ID Application" DEVELOPMENT_TEAM=<your-team-id>
         CODE_SIGN_IDENTITY: "-"
         CODE_SIGN_STYLE: Automatic
