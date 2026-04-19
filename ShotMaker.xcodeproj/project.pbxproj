@@ -7,13 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1023D5764F8646F43004889C /* HotkeyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20BCF69C6CAFD26A80A2C07C /* HotkeyService.swift */; };
 		14ADEFAAA228C43C788EBE73 /* SQLiteStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE782B7A31405746A2E5E67 /* SQLiteStorage.swift */; };
+		22DD01F7D625CAF0D026904F /* EmbeddingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D04DC979AC66B223547807C /* EmbeddingService.swift */; };
 		30CADE01690C9CFCD60A3A62 /* ScreenshotWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E85D5C55C3D18A5C1DD3D8F1 /* ScreenshotWatcher.swift */; };
 		432565B765CF6AA21B3B7234 /* ShotMakerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FCBB5A60D3D24B81303014D /* ShotMakerApp.swift */; };
 		5579FE6DD873ACA2E8BA4215 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8521B9B984327981090989E /* SettingsView.swift */; };
 		58E10EEC46D1B37B749CCCA4 /* ScreenshotItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 214BDF9623ADD39B7DD4D312 /* ScreenshotItem.swift */; };
+		6F9CECDC00CD7DA529D93E8B /* ClipboardImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F58C58697A4EB2859C17D3 /* ClipboardImageService.swift */; };
 		8F996B6ADFB0B40DDB2CB022 /* ThumbnailGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 893A94232C18525B3A0E35D9 /* ThumbnailGridView.swift */; };
 		9405CA915E980F1BF19DB3B3 /* OCRService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5241C70FFE3F5F6738990F4D /* OCRService.swift */; };
+		A09245EBCA02B12B3896BFC4 /* TextHighlighter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD81C8B41065129C1735660 /* TextHighlighter.swift */; };
 		A09A8656C89AC70444ADCC47 /* MainWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21ECAE719D044C6117001378 /* MainWindowView.swift */; };
 		A2CBBE15469F09922C8C75F1 /* DetailPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15AFEE74406E8CBF1D42218 /* DetailPanelView.swift */; };
 		A8EA3015BB219A7371B60948 /* ShotMaker.icns in Resources */ = {isa = PBXBuildFile; fileRef = A99CE729F6CD40FA3F597051 /* ShotMaker.icns */; };
@@ -25,16 +29,20 @@
 
 /* Begin PBXFileReference section */
 		01AC5BEC97B7BBA60A9011A4 /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
+		20BCF69C6CAFD26A80A2C07C /* HotkeyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeyService.swift; sourceTree = "<group>"; };
 		214BDF9623ADD39B7DD4D312 /* ScreenshotItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotItem.swift; sourceTree = "<group>"; };
 		21ECAE719D044C6117001378 /* MainWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindowView.swift; sourceTree = "<group>"; };
 		37994A99F808418358880875 /* ShotMaker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShotMaker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FCBB5A60D3D24B81303014D /* ShotMakerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShotMakerApp.swift; sourceTree = "<group>"; };
 		5241C70FFE3F5F6738990F4D /* OCRService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRService.swift; sourceTree = "<group>"; };
+		5AD81C8B41065129C1735660 /* TextHighlighter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextHighlighter.swift; sourceTree = "<group>"; };
 		5B4B4E05DC1A6DA7759539B6 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		6EE782B7A31405746A2E5E67 /* SQLiteStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLiteStorage.swift; sourceTree = "<group>"; };
 		6F9BC87850CFFF54B97219D1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		893A94232C18525B3A0E35D9 /* ThumbnailGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailGridView.swift; sourceTree = "<group>"; };
+		9D04DC979AC66B223547807C /* EmbeddingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmbeddingService.swift; sourceTree = "<group>"; };
 		A5548FEEDB632359BF7B495E /* TaggerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaggerService.swift; sourceTree = "<group>"; };
+		A6F58C58697A4EB2859C17D3 /* ClipboardImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardImageService.swift; sourceTree = "<group>"; };
 		A99CE729F6CD40FA3F597051 /* ShotMaker.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = ShotMaker.icns; sourceTree = "<group>"; };
 		B8521B9B984327981090989E /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		CBD3A8BF2B47381B46FF0EE5 /* ShotMaker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShotMaker.entitlements; sourceTree = "<group>"; };
@@ -76,6 +84,7 @@
 				21ECAE719D044C6117001378 /* MainWindowView.swift */,
 				B8521B9B984327981090989E /* SettingsView.swift */,
 				01AC5BEC97B7BBA60A9011A4 /* SidebarView.swift */,
+				5AD81C8B41065129C1735660 /* TextHighlighter.swift */,
 				893A94232C18525B3A0E35D9 /* ThumbnailGridView.swift */,
 			);
 			path = Views;
@@ -98,6 +107,9 @@
 		D07B082904481E6F3EE93D02 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				A6F58C58697A4EB2859C17D3 /* ClipboardImageService.swift */,
+				9D04DC979AC66B223547807C /* EmbeddingService.swift */,
+				20BCF69C6CAFD26A80A2C07C /* HotkeyService.swift */,
 				5241C70FFE3F5F6738990F4D /* OCRService.swift */,
 				E85D5C55C3D18A5C1DD3D8F1 /* ScreenshotWatcher.swift */,
 				6EE782B7A31405746A2E5E67 /* SQLiteStorage.swift */,
@@ -175,7 +187,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				DAC2909255EF7913C56CAFDD /* AppSettings.swift in Sources */,
+				6F9CECDC00CD7DA529D93E8B /* ClipboardImageService.swift in Sources */,
 				A2CBBE15469F09922C8C75F1 /* DetailPanelView.swift in Sources */,
+				22DD01F7D625CAF0D026904F /* EmbeddingService.swift in Sources */,
+				1023D5764F8646F43004889C /* HotkeyService.swift in Sources */,
 				A09A8656C89AC70444ADCC47 /* MainWindowView.swift in Sources */,
 				9405CA915E980F1BF19DB3B3 /* OCRService.swift in Sources */,
 				14ADEFAAA228C43C788EBE73 /* SQLiteStorage.swift in Sources */,
@@ -186,6 +201,7 @@
 				D925952D6AF9E3CB2E6CAC1B /* SidebarView.swift in Sources */,
 				CB21C59BFFAA90653E32A6F3 /* StorageProtocol.swift in Sources */,
 				C3296C25A9411914DAF76446 /* TaggerService.swift in Sources */,
+				A09245EBCA02B12B3896BFC4 /* TextHighlighter.swift in Sources */,
 				8F996B6ADFB0B40DDB2CB022 /* ThumbnailGridView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

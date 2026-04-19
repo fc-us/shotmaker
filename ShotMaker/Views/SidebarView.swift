@@ -4,20 +4,25 @@ struct SidebarView: View {
     @Binding var searchQuery: String
     @Binding var selectedTag: String?
     @Binding var selectedApp: String?
+    @Binding var semanticMode: Bool
     let tagCounts: [(String, Int)]
     let appCounts: [(String, Int)]
     let onSearch: () -> Void
+    let onPasteAndSearch: () -> Void
+
+    @FocusState private var searchFocused: Bool
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             // Search field
             HStack(spacing: 6) {
-                Image(systemName: "magnifyingglass")
-                    .foregroundColor(.secondary)
+                Image(systemName: semanticMode ? "sparkles" : "magnifyingglass")
+                    .foregroundColor(semanticMode ? .purple : .secondary)
                     .font(.system(size: 12))
-                TextField("Search text...", text: $searchQuery)
+                TextField(semanticMode ? "Search by meaning..." : "Search text...", text: $searchQuery)
                     .textFieldStyle(.plain)
                     .font(.system(size: 13))
+                    .focused($searchFocused)
                     .onSubmit { onSearch() }
                 if !searchQuery.isEmpty {
                     Button(action: {
@@ -36,6 +41,48 @@ struct SidebarView: View {
             .cornerRadius(6)
             .padding(.horizontal, 12)
             .padding(.top, 12)
+            .padding(.bottom, 6)
+
+            // Mode toggle + paste
+            HStack(spacing: 6) {
+                Button(action: {
+                    semanticMode.toggle()
+                    onSearch()
+                }) {
+                    HStack(spacing: 3) {
+                        Image(systemName: "sparkles")
+                            .font(.system(size: 9))
+                        Text(semanticMode ? "Smart" : "Exact")
+                            .font(.system(size: 10, weight: .medium))
+                    }
+                    .padding(.horizontal, 6)
+                    .padding(.vertical, 3)
+                    .background(semanticMode ? Color.purple.opacity(0.25) : Color.white.opacity(0.06))
+                    .cornerRadius(4)
+                    .foregroundColor(semanticMode ? .purple : .secondary)
+                }
+                .buttonStyle(.plain)
+                .help("Toggle semantic vs exact search")
+
+                Button(action: onPasteAndSearch) {
+                    HStack(spacing: 3) {
+                        Image(systemName: "doc.on.clipboard")
+                            .font(.system(size: 9))
+                        Text("Paste")
+                            .font(.system(size: 10, weight: .medium))
+                    }
+                    .padding(.horizontal, 6)
+                    .padding(.vertical, 3)
+                    .background(Color.white.opacity(0.06))
+                    .cornerRadius(4)
+                    .foregroundColor(.secondary)
+                }
+                .buttonStyle(.plain)
+                .help("Paste image from clipboard and ingest")
+
+                Spacer()
+            }
+            .padding(.horizontal, 12)
             .padding(.bottom, 8)
 
             Divider()
@@ -105,6 +152,9 @@ struct SidebarView: View {
         }
         .frame(width: 180)
         .background(Color(nsColor: NSColor(calibratedWhite: 0.10, alpha: 1.0)))
+        .onReceive(NotificationCenter.default.publisher(for: .focusSearch)) { _ in
+            searchFocused = true
+        }
     }
 
 }

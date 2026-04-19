@@ -28,6 +28,7 @@ final class SQLiteStorage: ScreenshotStorage {
 
         execute("PRAGMA journal_mode=WAL")
         createTables()
+        migrateAddEmbedding()
     }
 
     deinit {
@@ -78,10 +79,15 @@ final class SQLiteStorage: ScreenshotStorage {
         execute(triggers)
     }
 
+    private func migrateAddEmbedding() {
+        // Idempotent: ALTER TABLE fails silently via execute() if column exists
+        execute("ALTER TABLE screenshots ADD COLUMN embedding BLOB")
+    }
+
     // MARK: - CRUD
 
     @discardableResult
-    func save(filePath: String, ocrText: String?, tag: String, appName: String?, createdAt: Date, thumbnail: Data?) throws -> Int64 {
+    func save(filePath: String, ocrText: String?, tag: String, appName: String?, createdAt: Date, thumbnail: Data?, embedding: Data? = nil) throws -> Int64 {
         try queue.sync {
             guard let db = db else { throw StorageError.prepareFailed("Database not open") }
 
@@ -99,8 +105,8 @@ final class SQLiteStorage: ScreenshotStorage {
             sqlite3_finalize(checkStmt)
 
             let sql = """
-            INSERT INTO screenshots (file_path, ocr_text, tag, app_name, created_at, thumbnail)
-            VALUES (?1, ?2, ?3, ?4, ?5, ?6)
+            INSERT INTO screenshots (file_path, ocr_text, tag, app_name, created_at, thumbnail, embedding)
+            VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)
             """
             var stmt: OpaquePointer?
             guard sqlite3_prepare_v2(db, sql, -1, &stmt, nil) == SQLITE_OK else {
@@ -126,11 +132,19 @@ final class SQLiteStorage: ScreenshotStorage {
             sqlite3_bind_double(stmt, 5, createdAt.timeIntervalSince1970)
 
             if let thumbnail = thumbnail {
-                thumbnail.withUnsafeBytes { ptr in
-                    sqlite3_bind_blob(stmt, 6, ptr.baseAddress, Int32(thumbnail.count), SQLITE_TRANSIENT)
+                thumbnail.withUnsafeBytes { ptr -> Void in
+                    _ = sqlite3_bind_blob(stmt, 6, ptr.baseAddress, Int32(thumbnail.count), SQLITE_TRANSIENT)
                 }
             } else {
                 sqlite3_bind_null(stmt, 6)
+            }
+
+            if let embedding = embedding {
+                embedding.withUnsafeBytes { ptr -> Void in
+                    _ = sqlite3_bind_blob(stmt, 7, ptr.baseAddress, Int32(embedding.count), SQLITE_TRANSIENT)
+                }
+            } else {
+                sqlite3_bind_null(stmt, 7)
             }
 
             guard sqlite3_step(stmt) == SQLITE_DONE else {
@@ -142,6 +156,66 @@ final class SQLiteStorage: ScreenshotStorage {
             let rowId = sqlite3_last_insert_rowid(db)
             sqlite3_finalize(stmt)
             return rowId
+        }
+    }
+
+    /// Load (id, ocrText, embedding) for all rows with OCR text.
+    /// Used by semantic search to rank in memory.
+    func allEmbeddings() throws -> [(id: Int64, ocrText: String, embedding: Data?)] {
+        try queue.sync {
+            guard let db = db else { throw StorageError.prepareFailed("Database not open") }
+            let sql = "SELECT id, ocr_text, embedding FROM screenshots WHERE ocr_text IS NOT NULL"
+            var stmt: OpaquePointer?
+            guard sqlite3_prepare_v2(db, sql, -1, &stmt, nil) == SQLITE_OK else {
+                throw StorageError.prepareFailed(lastError())
+            }
+            var results: [(Int64, String, Data?)] = []
+            while sqlite3_step(stmt) == SQLITE_ROW {
+                let id = sqlite3_column_int64(stmt, 0)
+                let text = String(cString: sqlite3_column_text(stmt, 1))
+                var emb: Data? = nil
+                if sqlite3_column_type(stmt, 2) != SQLITE_NULL {
+                    let blobPtr = sqlite3_column_blob(stmt, 2)
+                    let blobSize = sqlite3_column_bytes(stmt, 2)
+                    if let blobPtr = blobPtr, blobSize > 0 {
+                        emb = Data(bytes: blobPtr, count: Int(blobSize))
+                    }
+                }
+                results.append((id, text, emb))
+            }
+            sqlite3_finalize(stmt)
+            return results
+        }
+    }
+
+    func updateEmbedding(id: Int64, embedding: Data) throws {
+        try queue.sync {
+            guard let db = db else { throw StorageError.prepareFailed("Database not open") }
+            let sql = "UPDATE screenshots SET embedding = ?1 WHERE id = ?2"
+            var stmt: OpaquePointer?
+            guard sqlite3_prepare_v2(db, sql, -1, &stmt, nil) == SQLITE_OK else {
+                throw StorageError.prepareFailed(lastError())
+            }
+            embedding.withUnsafeBytes { ptr -> Void in
+                _ = sqlite3_bind_blob(stmt, 1, ptr.baseAddress, Int32(embedding.count), SQLITE_TRANSIENT)
+            }
+            sqlite3_bind_int64(stmt, 2, id)
+            sqlite3_step(stmt)
+            sqlite3_finalize(stmt)
+        }
+    }
+
+    func fetchByIds(_ ids: [Int64]) throws -> [ScreenshotItem] {
+        guard !ids.isEmpty else { return [] }
+        let placeholders = ids.map { _ in "?" }.joined(separator: ",")
+        let sql = """
+        SELECT id, file_path, ocr_text, tag, app_name, created_at, thumbnail
+        FROM screenshots WHERE id IN (\(placeholders))
+        """
+        return try query(sql: sql) { stmt in
+            for (i, id) in ids.enumerated() {
+                sqlite3_bind_int64(stmt, Int32(i + 1), id)
+            }
         }
     }
 

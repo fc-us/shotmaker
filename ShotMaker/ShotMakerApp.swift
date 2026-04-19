@@ -1,6 +1,11 @@
 import SwiftUI
 import UserNotifications
 
+extension Notification.Name {
+    static let focusSearch = Notification.Name("org.frontiercommons.shot-maker.focusSearch")
+    static let pasteAndSearch = Notification.Name("org.frontiercommons.shot-maker.pasteAndSearch")
+}
+
 @main
 struct ShotMakerApp: App {
     @StateObject private var watcher = ScreenshotWatcher()
@@ -43,7 +48,22 @@ class StatusBarDelegate: NSObject, NSApplicationDelegate {
             self?.rebuildMenu()
         }
 
+        // ⌥⌘F global hotkey: bring window forward + focus search
+        HotkeyService.shared.register()
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(handleHotkey),
+            name: HotkeyService.hotkeyPressed, object: nil
+        )
+
         NSApplication.shared.activate(ignoringOtherApps: true)
+    }
+
+    @objc func handleHotkey() {
+        openApp()
+        // Let the window come up, then ping the search field to take focus
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+            NotificationCenter.default.post(name: .focusSearch, object: nil)
+        }
     }
 
     func setWatcher(_ watcher: ScreenshotWatcher) {

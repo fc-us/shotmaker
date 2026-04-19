@@ -146,6 +146,12 @@ final class ScreenshotWatcher: ObservableObject {
                 let tag = self.taggerService.classify(text: ocrText)
                 print("[ShotMaker] OCR result: \(ocrText?.prefix(80) ?? "nil") | tag: \(tag.rawValue)")
 
+                let embeddingData: Data? = {
+                    guard let text = ocrText,
+                          let vec = EmbeddingService.shared.vector(for: text) else { return nil }
+                    return EmbeddingService.encode(vec)
+                }()
+
                 do {
                     let _ = try self.storage.save(
                         filePath: path,
@@ -153,7 +159,8 @@ final class ScreenshotWatcher: ObservableObject {
                         tag: tag.rawValue,
                         appName: appName,
                         createdAt: Date(),
-                        thumbnail: thumbnail
+                        thumbnail: thumbnail,
+                        embedding: embeddingData
                     )
                     DispatchQueue.main.async {
                         self.loadItems()
@@ -199,6 +206,60 @@ final class ScreenshotWatcher: ObservableObject {
             DispatchQueue.main.async { self.items = results }
         } catch {
             print("[ShotMaker] Search failed: \(error)")
+        }
+    }
+
+    /// Semantic search: rank all rows by cosine similarity to query embedding.
+    /// Backfills missing embeddings for older rows lazily.
+    func semanticSearch(query: String, tag: String? = nil, appName: String? = nil, limit: Int = 100) {
+        let trimmed = query.trimmingCharacters(in: .whitespaces)
+        guard !trimmed.isEmpty else {
+            search(query: "", tag: tag, appName: appName)
+            return
+        }
+        guard let queryVec = EmbeddingService.shared.vector(for: trimmed) else {
+            search(query: query, tag: tag, appName: appName)
+            return
+        }
+
+        processingQueue.async { [weak self] in
+            guard let self = self else { return }
+            do {
+                let rows = try self.storage.allEmbeddings()
+                var scored: [(Int64, Float)] = []
+                scored.reserveCapacity(rows.count)
+
+                for row in rows {
+                    let vec: [Float]
+                    if let data = row.embedding {
+                        vec = EmbeddingService.decode(data)
+                    } else if let computed = EmbeddingService.shared.vector(for: row.ocrText) {
+                        vec = computed
+                        try? self.storage.updateEmbedding(id: row.id, embedding: EmbeddingService.encode(computed))
+                    } else {
+                        continue
+                    }
+                    scored.append((row.id, EmbeddingService.cosine(queryVec, vec)))
+                }
+
+                // Keep top matches with positive similarity
+                scored.sort { $0.1 > $1.1 }
+                let topIds = scored.prefix(limit).filter { $0.1 > 0.15 }.map { $0.0 }
+
+                let items = try self.storage.fetchByIds(topIds)
+                // Preserve ranking order
+                let orderMap = Dictionary(uniqueKeysWithValues: topIds.enumerated().map { ($1, $0) })
+                let ordered = items.sorted {
+                    (orderMap[$0.id] ?? .max) < (orderMap[$1.id] ?? .max)
+                }.filter { item in
+                    (tag == nil || item.tag.rawValue == tag) &&
+                    (appName == nil || item.appName == appName)
+                }
+
+                DispatchQueue.main.async { self.items = ordered }
+            } catch {
+                print("[ShotMaker] Semantic search failed: \(error)")
+            }
         }
     }
 
