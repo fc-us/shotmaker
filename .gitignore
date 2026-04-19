@@ -1,0 +1,11 @@
+build/
+*.xcarchive/
+DerivedData/
+*.dSYM/
+.DS_Store
+ExportOptions.plist
+.gstack/
+.enzyme/
+.enzyme-embeddings/
+xcuserdata/
+*.xcworkspace/xcuserdata/

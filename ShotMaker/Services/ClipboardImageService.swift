@@ -25,7 +25,7 @@ enum ClipboardImageService {
 
         let fmt = DateFormatter()
         fmt.dateFormat = "yyyy-MM-dd-HHmmss"
-        let filename = "clipboard-\(fmt.string(from: Date())).png"
+        let filename = "clipboard-\(fmt.string(from: Date()))-\(UUID().uuidString.prefix(8)).png"
         let dir = FileManager.default.temporaryDirectory
             .appendingPathComponent("ShotMaker-clipboard", isDirectory: true)
         try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)

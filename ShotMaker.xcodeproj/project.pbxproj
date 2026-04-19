@@ -149,6 +149,10 @@
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1500;
 				TargetAttributes = {
+					5B8B074BC14AA99700E0020D = {
+						DevelopmentTeam = RJL4AN4QK9;
+						ProvisioningStyle = Manual;
+					};
 				};
 			};
 			buildConfigurationList = 7E6E4D54B444BF63EB467463 /* Build configuration list for PBXProject "ShotMaker" */;
@@ -214,8 +218,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = ShotMaker/ShotMaker.entitlements;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = RJL4AN4QK9;
+				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = ShotMaker/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
@@ -294,8 +302,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = ShotMaker/ShotMaker.entitlements;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = RJL4AN4QK9;
+				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = ShotMaker/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
