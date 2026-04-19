@@ -2,7 +2,7 @@
 
 macOS menubar app that watches your Desktop, runs OCR on every screenshot, and lets you search everything you've ever seen.
 
-**[Download v1.0.0 →](https://github.com/fc-us/shotmaker/releases/latest/download/ShotMaker.dmg)**
+**[Download →](https://github.com/fc-us/shotmaker/releases/latest)**
 
 ---
 
@@ -50,13 +50,20 @@ make run        # builds and launches
 
 Requires Xcode 15+ installed from the App Store.
 
+By default this builds with ad-hoc signing (runs on your own machine). To build a distributable release with your own Developer ID, override the signing settings:
+
+```bash
+make generate
+CODE_SIGN_IDENTITY="Developer ID Application" DEVELOPMENT_TEAM=<your-team-id> make build
+```
+
 ## Architecture
 
 Single-process SwiftUI app. The interesting parts:
 
 | File | What it does |
 |---|---|
-| `ScreenshotWatcher.swift` | FSEvents + poll loop, detects new PNGs, dispatches processing |
+| `ScreenshotWatcher.swift` | 2-second poll timer, detects new PNGs, dispatches processing |
 | `OCRService.swift` | Apple Vision `VNRecognizeTextRequest`, CoreGraphics thumbnail gen |
 | `SQLiteStorage.swift` | SQLite3 direct (no ORM), FTS5 virtual table, serial queue for writes |
 | `EmbeddingService.swift` | NLEmbedding vectors, cosine similarity, lazy backfill |

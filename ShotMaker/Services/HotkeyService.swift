@@ -22,7 +22,7 @@ final class HotkeyService {
         var eventType = EventTypeSpec(eventClass: OSType(kEventClassKeyboard),
                                       eventKind: UInt32(kEventHotKeyPressed))
 
-        InstallEventHandler(GetApplicationEventTarget(), { _, event, _ -> OSStatus in
+        let handlerStatus = InstallEventHandler(GetApplicationEventTarget(), { _, event, _ -> OSStatus in
             var hkID = EventHotKeyID()
             GetEventParameter(event, EventParamName(kEventParamDirectObject),
                               EventParamType(typeEventHotKeyID),
@@ -30,9 +30,15 @@ final class HotkeyService {
             NotificationCenter.default.post(name: HotkeyService.hotkeyPressed, object: nil)
             return noErr
         }, 1, &eventType, nil, &eventHandler)
+        if handlerStatus != noErr {
+            print("[ShotMaker] HotkeyService: InstallEventHandler failed with status \(handlerStatus)")
+        }
 
-        RegisterEventHotKey(keyCode, modifiers, hotKeyID,
-                            GetApplicationEventTarget(), 0, &hotKeyRef)
+        let hotkeyStatus = RegisterEventHotKey(keyCode, modifiers, hotKeyID,
+                                               GetApplicationEventTarget(), 0, &hotKeyRef)
+        if hotkeyStatus != noErr {
+            print("[ShotMaker] HotkeyService: RegisterEventHotKey failed with status \(hotkeyStatus) — ⌥⌘F may already be taken by another app")
+        }
     }
 
     func unregister() {

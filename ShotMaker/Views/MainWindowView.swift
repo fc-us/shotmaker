@@ -120,9 +120,7 @@ struct MainWindowView: View {
             }
         }
         .onAppear {
-            if let delegate = NSApplication.shared.delegate as? StatusBarDelegate {
-                delegate.setWatcher(watcher)
-            }
+            watcher.restartIfDirectoryChanged()
         }
     }
 

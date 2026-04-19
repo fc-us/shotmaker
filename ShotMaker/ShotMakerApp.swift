@@ -8,7 +8,7 @@ extension Notification.Name {
 
 @main
 struct ShotMakerApp: App {
-    @StateObject private var watcher = ScreenshotWatcher()
+    @StateObject private var watcher: ScreenshotWatcher = ScreenshotWatcher.shared
     @ObservedObject private var appSettings = AppSettings.shared
     @NSApplicationDelegateAdaptor(StatusBarDelegate.self) var statusBarDelegate
 
@@ -41,6 +41,10 @@ class StatusBarDelegate: NSObject, NSApplicationDelegate {
         let menu = NSMenu()
         menu.delegate = self
         statusItem?.menu = menu
+
+        // Wire the shared watcher immediately so the menu shows live counts before the window opens
+        self.watcher = ScreenshotWatcher.shared
+        rebuildMenu()
 
         // ⌥⌘F global hotkey: bring window forward + focus search
         HotkeyService.shared.register()

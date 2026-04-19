@@ -5,6 +5,7 @@ import UserNotifications
 
 /// Watches a directory for new PNG files and processes them through OCR + tagging.
 final class ScreenshotWatcher: ObservableObject {
+    static let shared = ScreenshotWatcher()
     @Published var items: [ScreenshotItem] = []
     @Published var isWatching: Bool = true
     @Published var tagCounts: [(String, Int)] = []

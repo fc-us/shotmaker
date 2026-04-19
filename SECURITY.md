@@ -15,7 +15,7 @@ Please don't open a public GitHub issue for security vulnerabilities. I'll respo
 ShotMaker is a local-only utility. It has no server, no account system, and no network stack. The relevant attack surface is:
 
 **What it has access to:**
-- Your Desktop folder (required to watch for screenshots)
+- The directory you configure for watching (default `~/Desktop`, changeable in Settings)
 - Writes one SQLite database to `~/Library/Application Support/ShotMaker/`
 - Sends macOS user notifications (no content beyond filename and auto-tag)
 

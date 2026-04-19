@@ -16,11 +16,12 @@ targets:
       properties:
         CFBundleIconFile: ShotMaker
         NSHumanReadableCopyright: "Copyright 2026 Frontier Commons"
-        CFBundleShortVersionString: "1.0.0"
+        CFBundleShortVersionString: "1.1.0"
         LSUIElement: true
         LSApplicationCategoryType: public.app-category.productivity
         NSHighResolutionCapable: true
         NSUserNotificationsUsageDescription: "ShotMaker sends a notification when a new screenshot is captured and processed."
+        NSDesktopFolderUsageDescription: "ShotMaker watches your Desktop folder to detect and index new screenshots."
     entitlements:
       path: ShotMaker/ShotMaker.entitlements
       properties:
@@ -31,14 +32,15 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: org.frontiercommons.shot-maker
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
-        MARKETING_VERSION: "1.0.0"
-        CURRENT_PROJECT_VERSION: "1"
+        MARKETING_VERSION: "1.1.0"
+        CURRENT_PROJECT_VERSION: "2"
         SWIFT_VERSION: "5.9"
         MACOSX_DEPLOYMENT_TARGET: "13.0"
         LD_RUNPATH_SEARCH_PATHS: "@executable_path/../Frameworks"
         INFOPLIST_FILE: ShotMaker/Info.plist
         CODE_SIGN_ENTITLEMENTS: ShotMaker/ShotMaker.entitlements
         ENABLE_HARDENED_RUNTIME: YES
-        CODE_SIGN_IDENTITY: "Developer ID Application"
-        CODE_SIGN_STYLE: Manual
-        DEVELOPMENT_TEAM: RJL4AN4QK9
+        # For local development: ad-hoc signing works fine
+        # For distribution: override with CODE_SIGN_IDENTITY="Developer ID Application" DEVELOPMENT_TEAM=<your-team-id>
+        CODE_SIGN_IDENTITY: "-"
+        CODE_SIGN_STYLE: Automatic
