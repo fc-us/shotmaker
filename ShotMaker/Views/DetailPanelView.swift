@@ -2,6 +2,7 @@ import SwiftUI
 
 struct DetailPanelView: View {
     let item: ScreenshotItem?
+    var searchQuery: String = ""
     let onDelete: (ScreenshotItem) -> Void
     var onRetag: ((ScreenshotItem, ScreenshotTag) -> Void)? = nil
     @State private var copyFeedback: String? = nil
@@ -99,9 +100,8 @@ struct DetailPanelView: View {
                                 .foregroundColor(.secondary)
 
                             if let ocrText = item.ocrText, !ocrText.isEmpty {
-                                Text(ocrText)
+                                Text(TextHighlighter.highlight(ocrText, query: searchQuery))
                                     .font(.system(size: 11))
-                                    .foregroundColor(.white.opacity(0.85))
                                     .textSelection(.enabled)
                                     .frame(maxWidth: .infinity, alignment: .leading)
                             } else {

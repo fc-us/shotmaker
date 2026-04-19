@@ -3,7 +3,7 @@ import Foundation
 /// Protocol for screenshot storage backends.
 /// Swap SQLite for Core Data or anything else by conforming to this.
 protocol ScreenshotStorage {
-    func save(filePath: String, ocrText: String?, tag: String, appName: String?, createdAt: Date, thumbnail: Data?) throws -> Int64
+    func save(filePath: String, ocrText: String?, tag: String, appName: String?, createdAt: Date, thumbnail: Data?, embedding: Data?) throws -> Int64
     func fetchAll(limit: Int, offset: Int) throws -> [ScreenshotItem]
     func search(query: String, limit: Int) throws -> [ScreenshotItem]
     func searchWithFilters(query: String, tag: String?, appName: String?, limit: Int) throws -> [ScreenshotItem]
@@ -13,4 +13,7 @@ protocol ScreenshotStorage {
     func tagCounts() throws -> [(String, Int)]
     func appCounts() throws -> [(String, Int)]
     func recentCount(since: Date) throws -> Int
+    func allEmbeddings() throws -> [(id: Int64, ocrText: String, embedding: Data?)]
+    func updateEmbedding(id: Int64, embedding: Data) throws
+    func fetchByIds(_ ids: [Int64]) throws -> [ScreenshotItem]
 }

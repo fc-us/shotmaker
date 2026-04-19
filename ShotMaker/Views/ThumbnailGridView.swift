@@ -4,6 +4,7 @@ struct ThumbnailGridView: View {
     let items: [ScreenshotItem]
     @Binding var selectedItem: ScreenshotItem?
     let thumbnailSize: Double
+    var searchQuery: String = ""
 
     private var columns: [GridItem] {
         [GridItem(.adaptive(minimum: max(thumbnailSize, 120)), spacing: 8)]
@@ -36,8 +37,13 @@ struct ThumbnailGridView: View {
                         ThumbnailCard(
                             item: item,
                             isSelected: selectedItem?.id == item.id,
-                            size: thumbnailSize
+                            size: thumbnailSize,
+                            searchQuery: searchQuery
                         )
+                        .onDrag {
+                            let url = URL(fileURLWithPath: item.filePath)
+                            return NSItemProvider(contentsOf: url) ?? NSItemProvider()
+                        }
                         .onTapGesture(count: 2) {
                             openInPreview(item)
                         }
@@ -61,6 +67,7 @@ struct ThumbnailCard: View {
     let item: ScreenshotItem
     let isSelected: Bool
     let size: Double
+    var searchQuery: String = ""
     @State private var isHovered = false
 
     var body: some View {
@@ -85,10 +92,9 @@ struct ThumbnailCard: View {
             .cornerRadius(4)
             .clipped()
 
-            // Preview text
-            Text(item.preview)
+            // Preview text with search highlighting
+            Text(TextHighlighter.highlight(item.preview, query: searchQuery, baseColor: .white.opacity(0.8)))
                 .font(.system(size: 10))
-                .foregroundColor(.white.opacity(0.8))
                 .lineLimit(2)
                 .frame(maxWidth: .infinity, alignment: .leading)
 

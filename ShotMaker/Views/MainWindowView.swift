@@ -9,6 +9,7 @@ struct MainWindowView: View {
     @State private var selectedApp: String? = nil
     @State private var selectedItem: ScreenshotItem? = nil
     @State private var exportMessage: String? = nil
+    @State private var semanticMode: Bool = false
 
     var body: some View {
         HStack(spacing: 0) {
@@ -17,9 +18,11 @@ struct MainWindowView: View {
                 searchQuery: $searchQuery,
                 selectedTag: $selectedTag,
                 selectedApp: $selectedApp,
+                semanticMode: $semanticMode,
                 tagCounts: watcher.tagCounts,
                 appCounts: watcher.appCounts,
-                onSearch: performSearch
+                onSearch: performSearch,
+                onPasteAndSearch: pasteAndIngest
             )
 
             Divider()
@@ -28,7 +31,8 @@ struct MainWindowView: View {
             ThumbnailGridView(
                 items: watcher.items,
                 selectedItem: $selectedItem,
-                thumbnailSize: settings.thumbnailSize
+                thumbnailSize: settings.thumbnailSize,
+                searchQuery: searchQuery
             )
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color(nsColor: NSColor(calibratedWhite: 0.12, alpha: 1.0)))
@@ -38,6 +42,7 @@ struct MainWindowView: View {
             // Right: detail panel
             DetailPanelView(
                 item: selectedItem,
+                searchQuery: searchQuery,
                 onDelete: { item in
                     watcher.delete(item)
                     if selectedItem?.id == item.id {
@@ -190,10 +195,25 @@ struct MainWindowView: View {
     }
 
     private func performSearch() {
-        watcher.search(
-            query: searchQuery,
-            tag: selectedTag,
-            appName: selectedApp
-        )
+        if semanticMode {
+            watcher.semanticSearch(query: searchQuery, tag: selectedTag, appName: selectedApp)
+        } else {
+            watcher.search(query: searchQuery, tag: selectedTag, appName: selectedApp)
+        }
+    }
+
+    private func pasteAndIngest() {
+        guard let path = ClipboardImageService.captureToTempPNG() else {
+            exportMessage = "No image in clipboard"
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                if exportMessage == "No image in clipboard" { exportMessage = nil }
+            }
+            return
+        }
+        watcher.processNewFile(at: path, appName: nil)
+        exportMessage = "Pasted — extracting text..."
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            exportMessage = nil
+        }
     }
 }
