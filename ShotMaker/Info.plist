@@ -19,18 +19,18 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.1.0</string>
 	<key>CFBundleVersion</key>
-	<string>2</string>
+	<string>1</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.productivity</string>
 	<key>LSUIElement</key>
 	<true/>
+	<key>NSDesktopFolderUsageDescription</key>
+	<string>ShotMaker watches your Desktop folder to detect and index new screenshots.</string>
 	<key>NSHighResolutionCapable</key>
 	<true/>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright 2026 Frontier Commons</string>
 	<key>NSUserNotificationsUsageDescription</key>
 	<string>ShotMaker sends a notification when a new screenshot is captured and processed.</string>
-	<key>NSDesktopFolderUsageDescription</key>
-	<string>ShotMaker watches your Desktop folder to detect and index new screenshots.</string>
 </dict>
 </plist>

@@ -13,7 +13,7 @@ struct ShotMakerApp: App {
     @NSApplicationDelegateAdaptor(StatusBarDelegate.self) var statusBarDelegate
 
     var body: some Scene {
-        WindowGroup("ShotMaker") {
+        WindowGroup("Screenshot Recall") {
             MainWindowView()
                 .environmentObject(watcher)
                 .environmentObject(appSettings)
@@ -34,9 +34,11 @@ class StatusBarDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         // Create status bar item immediately on launch
-        statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
+        statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         if let button = statusItem?.button {
-            button.image = NSImage(systemSymbolName: "basketball.fill", accessibilityDescription: "ShotMaker")
+            button.image = NSImage(systemSymbolName: "magnifyingglass.circle.fill", accessibilityDescription: "Screenshot Recall")
+            button.title = " Recall"
+            button.imagePosition = .imageLeft
         }
         let menu = NSMenu()
         menu.delegate = self
@@ -55,6 +57,18 @@ class StatusBarDelegate: NSObject, NSApplicationDelegate {
 
         NSApplication.shared.activate(ignoringOtherApps: true)
 
+        // First launch: show menu bar tip
+        if !UserDefaults.standard.bool(forKey: "hasShownMenuBarTip") {
+            UserDefaults.standard.set(true, forKey: "hasShownMenuBarTip")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                let content = UNMutableNotificationContent()
+                content.title = "Screenshot Recall is running"
+                content.body = "Look for \" Recall\" in your menu bar. Press ⌥⌘F anytime to search your screenshots."
+                let request = UNNotificationRequest(identifier: "menuBarTip", content: content, trigger: nil)
+                UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+            }
+        }
+
         // First launch: ask user to grant sandbox access to their screenshots folder
         if !AppSettings.shared.hasWatchDirectoryPermission {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
@@ -65,7 +79,7 @@ class StatusBarDelegate: NSObject, NSApplicationDelegate {
 
     private func requestDirectoryPermission() {
         let panel = NSOpenPanel()
-        panel.message = "Choose the folder ShotMaker should watch for new screenshots.\n\nThis is usually your Desktop."
+        panel.message = "Choose the folder Screenshot Recall should watch for new screenshots.\n\nThis is usually your Desktop."
         panel.prompt = "Watch This Folder"
         panel.canChooseDirectories = true
         panel.canChooseFiles = false
@@ -104,7 +118,7 @@ class StatusBarDelegate: NSObject, NSApplicationDelegate {
         menu.addItem(info)
         menu.addItem(NSMenuItem.separator())
 
-        let openItem = NSMenuItem(title: "Open ShotMaker", action: #selector(openApp), keyEquivalent: "o")
+        let openItem = NSMenuItem(title: "Open Screenshot Recall", action: #selector(openApp), keyEquivalent: "o")
         openItem.target = self
         menu.addItem(openItem)
 
@@ -121,14 +135,14 @@ class StatusBarDelegate: NSObject, NSApplicationDelegate {
 
         menu.addItem(NSMenuItem.separator())
 
-        let quitItem = NSMenuItem(title: "Quit ShotMaker", action: #selector(quitApp), keyEquivalent: "q")
+        let quitItem = NSMenuItem(title: "Quit Screenshot Recall", action: #selector(quitApp), keyEquivalent: "q")
         quitItem.target = self
         menu.addItem(quitItem)
     }
 
     @objc func openApp() {
         NSApplication.shared.activate(ignoringOtherApps: true)
-        for window in NSApplication.shared.windows where window.title == "ShotMaker" {
+        for window in NSApplication.shared.windows where window.title == "Screenshot Recall" {
             window.makeKeyAndOrderFront(nil)
         }
     }

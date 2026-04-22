@@ -89,7 +89,7 @@ struct MainWindowView: View {
             }
             ToolbarItem(placement: .automatic) {
                 Button(action: {
-                    NSApp.sendAction(Selector(("showPreferencesWindow:")), to: nil, from: nil)
+                    NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
                 }) {
                     Image(systemName: "gear")
                 }

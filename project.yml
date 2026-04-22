@@ -15,16 +15,20 @@ targets:
       path: ShotMaker/Info.plist
       properties:
         CFBundleIconFile: ShotMaker
+        CFBundleDisplayName: "Screenshot Recall"
         NSHumanReadableCopyright: "Copyright 2026 Frontier Commons"
         CFBundleShortVersionString: "1.1.0"
+        CFBundleVersion: "2"
         LSUIElement: true
         LSApplicationCategoryType: public.app-category.productivity
         NSHighResolutionCapable: true
-        NSUserNotificationsUsageDescription: "ShotMaker sends a notification when a new screenshot is captured and processed."
-        NSDesktopFolderUsageDescription: "ShotMaker watches your Desktop folder to detect and index new screenshots."
+        NSUserNotificationsUsageDescription: "Screenshot Recall sends a notification when a new screenshot is captured and processed."
+        NSDesktopFolderUsageDescription: "Screenshot Recall watches your Desktop folder to detect and index new screenshots."
     entitlements:
       path: ShotMaker/ShotMaker.entitlements
       properties:
+        com.apple.security.app-sandbox: true
+        com.apple.security.files.user-selected.read-write: true
         com.apple.security.cs.allow-jit: false
         com.apple.security.cs.allow-unsigned-executable-memory: false
         com.apple.security.cs.disable-library-validation: false
@@ -43,5 +47,6 @@ targets:
         # For local development: ad-hoc signing (CODE_SIGN_IDENTITY="-")
         # For TestFlight/App Store: CODE_SIGN_IDENTITY="Apple Distribution" DEVELOPMENT_TEAM=<your-team-id>
         # For Developer ID DMG:    CODE_SIGN_IDENTITY="Developer ID Application" DEVELOPMENT_TEAM=<your-team-id>
-        CODE_SIGN_IDENTITY: "-"
+        CODE_SIGN_IDENTITY: "Apple Development"
         CODE_SIGN_STYLE: Automatic
+        DEVELOPMENT_TEAM: RJL4AN4QK9
